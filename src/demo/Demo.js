@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Section from './Section'
 import Logo from './Logo'
 import Text from './Text'
@@ -9,7 +10,8 @@ import Scrollable from './Scrollable'
 import Footer from './Footer'
 import Image from './Image'
 import { Button, Link } from './Button'
-import PropTypes from 'prop-types'
+import Dropdown from './Dropdown'
+import Tabs from './Tabs'
 
 export default function Demo({ openTour, isShowingMore, toggleShowMore }) {
   return (
@@ -25,7 +27,7 @@ export default function Demo({ openTour, isShowingMore, toggleShowMore }) {
         <Link
           color="dark"
           h="4"
-          href="https://github.com/[NAME]/reactour"
+          href="https://github.com/elrumordelaluz/reactour"
         >
           Github
         </Link>
@@ -168,7 +170,38 @@ export default function Demo({ openTour, isShowingMore, toggleShowMore }) {
 
         <Row>
           <Box align="right">
-            <Heading h="2">109 Baptist St</Heading>
+            <Heading
+              h="2"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
+              data-tut="reactour__highlighted"
+            >
+              109 Baptist St
+              <Dropdown>
+                <Tabs>
+                  <Tabs.Tab>
+                    This is a div in absolute position which will be in the
+                    highlighted region of the mask when tour is running.
+                  </Tabs.Tab>
+                  <Tabs.Tab>
+                    This is a long text which demonstrates how resizeObservables
+                    works. Lorem ipsum dolor sit amet, consectetur adipisicing
+                    elit. Optio neque vero consequuntur recusandae, dolore. Aut
+                    molestiae error enim illum odio vero sunt laborum
+                    consectetur minus deleniti pariatur eos quos, earum tenetur
+                    architecto veniam voluptatum sit! Optio similique ducimus
+                    esse vel inventore eaque earum adipisci quo, sit illum
+                    reprehenderit? Fugiat rerum inventore commodi dolores nisi
+                    soluta, nulla velit omnis! Quisquam est illo deserunt.
+                    Consequatur modi voluptatem consectetur nesciunt, eligendi,
+                    natus animi.
+                  </Tabs.Tab>
+                </Tabs>
+              </Dropdown>
+            </Heading>
             <Text>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio
               neque vero consequuntur recusandae, dolore. Aut molestiae error
@@ -272,14 +305,14 @@ export default function Demo({ openTour, isShowingMore, toggleShowMore }) {
         <Text size=".7em">
           <span data-tut="reactour__scroll">Made with ❤️</span> by{' '}
           <Link
-            href="https://twitter.com/[NAME]"
+            href="https://twitter.com/elrumordelaluz"
             color="white"
             nospaces
           >
-            @[NAME]
+            @elrumordelaluz
           </Link>{' '}
           ·{' '}
-          <Link href="https://github.com/[NAME]/reactour" nospaces>
+          <Link href="https://github.com/elrumordelaluz/reactour" nospaces>
             Github
           </Link>
         </Text>

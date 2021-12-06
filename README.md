@@ -5,19 +5,13 @@
   <strong>Tourist Guide</strong> into your React Components
 </p>
 <p align="center">
-  <a href="https://[NAME].github.io/reactour/">Demo</a>
+  <a href="https://elrumordelaluz.github.io/reactour/">Demo</a>
 </p>
 <p align="center">
   <a href="https://codesandbox.io/s/6z56m8x18k?module=%2FApp.js">
     <img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit 6z56m8x18k">
   </a>
 </p>
-
-<br />
-
-> ⚠️ The `master` branch is currently in _development_. Please use the [v1 branch](https://github.com/[NAME]/reactour/tree/v1) to follow the current versions published.
-
-<br />
 
 ## Install
 
@@ -40,8 +34,22 @@ yarn add styled-components@^4.0.0
 Add the `Tour` Component in your Application, passing the `steps` with the elements to highlight during the _Tour_.
 
 ```js
-import React, { useState } from 'react'
+import React from 'react'
 import Tour from 'reactour'
+
+class App extends Component {
+  // ...
+
+  render  (
+    <>
+      { /* other stuff */}
+      <Tour
+        steps={steps}
+        isOpen={this.state.isTourOpen}
+        onRequestClose={this.closeTour} />
+    </>
+  )
+}
 
 const steps = [
   {
@@ -49,22 +57,7 @@ const steps = [
     content: 'This is my first Step',
   },
   // ...
-];
-
-const App = () => {
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  return (
-    <>
-      { /* other stuff */}
-      <Tour
-        steps={steps}
-        isOpen={isTourOpen}
-        onRequestClose={() => setIsTourOpen(false)}
-      />
-    </>
-  )
-};
+]
 ```
 
 ### Tour Props
@@ -76,22 +69,6 @@ const App = () => {
 Type: `string`
 
 Default: `#007aff`
-
-#### accessibilityOptions
-
-> Configure accessibility related accessibility options
-
-Type: `object`
-
-Default:
-```js
-    // attribute to associate the dialog with a title for screen readers
-    ariaLabelledBy: null,
-    // aria-label attribute for the close button
-    closeButtonAriaLabel: 'Close',
-    // Show/Hide Navigation Dots for screen reader software
-    showNavigationScreenReaders: true,
-```
 
 #### badgeContent
 
@@ -136,14 +113,6 @@ Type: `bool`
 
 Type: `bool`
 
-#### disableFocusLock
-
-> Disable the ability to set a focus on Input in the _Highlighted_ element
-
-Type: `bool`
-
-Default: `true`
-
 #### disableKeyboardNavigation
 
 > Disable all keyboard navigation (next and prev step) when true, disable only selected keys when array
@@ -178,6 +147,12 @@ Type: `number`
 
 Type: `string`
 
+#### closeButtonClassName
+
+> Custom class name to add to the close button
+
+Type: `string`
+
 #### inViewThreshold
 
 > Tolerance in pixels to add when calculating if an element is outside viewport to scroll into view
@@ -191,6 +166,18 @@ Type: `number`
 Type: `bool`
 
 Required: `true`
+
+#### showArrow
+
+> Show/Hide arrow
+Type: `bool`
+
+Default: `false`
+
+#### arrowSize
+
+> arrow size(in px)
+Type: `number`
 
 #### lastStepNextButton
 
@@ -341,11 +328,9 @@ Default: `true`
 
 Type: `number`
 
-Default: `0`
-
 #### steps
 
-> Array of elements to highlight with special info and props
+> Array of elements to highligt with special info and props
 
 Type: `shape`
 
@@ -368,7 +353,12 @@ steps: PropTypes.arrayOf(PropTypes.shape({
   'action': PropTypes.func,
   'style': PropTypes.object,
   'stepInteraction': PropTypes.bool,
+  'scrollOffset': PropTypes.number,
   'navDotAriaLabel': PropTypes.string,
+  'observe': PropTypes.string,
+  'highlightedSelectors': PropTypes.array,
+  'mutationObservables': PropTypes.array,
+  'resizeObservables': PropTypes.array,
 })),
 ```
 
@@ -402,6 +392,23 @@ const steps = [
     stepInteraction: false,
     // Text read to screen reader software for this step's navigation dot
     navDotAriaLabel: 'Go to step 4',
+    // Observe direct children DOM mutations of this node
+    // If a child is added: the highlighted region is redrawn focused on it
+    // If a child is removed: the highlighted region is redrawn focused on the step selector node
+    observe: '[data-tour="observable-parent"]',
+    // Array of selectors, each selected node will be included (by union)
+    // in the highlighted region of the mask. You don't need to add the 
+    // step selector here as the default highlighted region is focused on it
+    highlightedSelectors: ['[data-tour="highlighted-element"]'],
+    // Array of selectors, each selected node DOM addition/removal will triggered a rerender
+    // of the mask shape. Useful in combinaison with highlightedSelectors when highlighted
+    // region of mask should be redrawn after a user action
+    mutationObservables: ['[data-tour="mutable-element"]'],
+    // Array of selectors, each selected node resize will triggered a rerender of the mask shape.
+    // Useful in combinaison with highlightedSelectors when highlighted region of mask should
+    // be redrawn after a user action. You should also add the selector in mutationObservables
+    // if you want to track DOM addition/removal too
+    resizeObservables: ['[data-tour="resizable-parent"]'],
   },
   // ...
 ]
@@ -421,11 +428,20 @@ Type: `number`
 
 Default: `1`
 
+#### disableFocusLock
+
+> Disable FocusLock component.
+
+Type: `bool`
+
+Default: `false`
+
+
 ## FAQ
 
 <p>
   <details>
-    <summary>How is implemented the scroll lock behaviour in the <a href="https://github.com/[NAME]/reactour/blob/master/src/demo/App.js">Demo</a>?</summary>
+    <summary>How is implemented the scroll lock behaviour in the <a href="https://github.com/elrumordelaluz/reactour/blob/master/src/demo/App.js">Demo</a>?</summary>
     <p>
       To guarantee a cross browser behaviour we use <a href="https://www.npmjs.com/package/body-scroll-lock">body-scroll-lock</a>. </p>
       <p>Import the library
