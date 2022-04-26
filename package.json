@@ -5,7 +5,7 @@
   "main": "dist/reactour.cjs.js",
   "module": "dist/reactour.esm.js",
   "scripts": {
-    "prepare": "npm run lib",
+    "precompile": "npm run lib",
     "start": "webpack-dev-server --mode development --open",
     "prelib": "rimraf dist",
     "lib": "rollup -c",
